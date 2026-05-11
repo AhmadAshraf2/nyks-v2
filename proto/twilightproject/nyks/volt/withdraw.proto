@@ -1,0 +1,41 @@
+syntax = "proto3";
+package twilightproject.nyks.volt;
+
+option go_package = "twilight-project/nyks/x/volt/types";
+
+message BtcWithdrawRequestInternal {
+  uint32 withdrawIdentifier = 1;
+  string withdrawAddress = 2;
+  uint64 withdrawReserveId = 3;
+  uint64 withdrawAmount = 4;
+  string twilightAddress = 5;
+  bool isConfirmed = 6;
+  int64 CreationTwilightBlockHeight = 7;
+}
+
+message ReserveWithdrawPool {
+  uint64 ReserveID = 1;
+  uint64 RoundID = 2;
+  repeated uint32 processingWithdrawIdentifiers = 3;
+  repeated uint32 queuedWithdrawIdentifiers = 4;
+  uint32 currentProcessingIndex = 5;
+}
+
+message WithdrawRequestSnap {
+  uint32 withdrawIdentifier = 1;
+  string withdrawAddress = 2;
+  uint64 withdrawAmount = 3;
+}
+
+message ReserveWithdrawSnapshot {
+  uint64 ReserveId = 1;
+  uint64 RoundId = 2;
+  repeated WithdrawRequestSnap withdrawRequests = 3;
+  int64 EndBlockerHeightTwilight = 4;
+}
+
+message NewSweepProposalReceivedInternal {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+  int64 creationTwilightBlockHeight = 6;
+}

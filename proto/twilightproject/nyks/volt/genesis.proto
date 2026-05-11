@@ -1,0 +1,17 @@
+syntax = "proto3";
+package twilightproject.nyks.volt;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "twilightproject/nyks/volt/params.proto";
+
+option go_package = "twilight-project/nyks/x/volt/types";
+
+// GenesisState defines the volt module's genesis state.
+message GenesisState {
+  // params defines all the parameters of the module.
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}

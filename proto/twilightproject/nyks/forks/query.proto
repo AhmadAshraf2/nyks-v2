@@ -1,0 +1,70 @@
+syntax = "proto3";
+package twilightproject.nyks.forks;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "twilightproject/nyks/forks/params.proto";
+import "twilightproject/nyks/forks/tx.proto";
+import "twilightproject/nyks/forks/attestation.proto";
+
+option go_package = "twilight-project/nyks/x/forks/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/twilightproject/nyks/nyks/params";
+  }
+
+  // GetAttestations queries attestations with optional filters.
+  rpc GetAttestations(QueryAttestationsRequest) returns (QueryAttestationsResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/nyks/attestations";
+  }
+
+  // DelegateKeysByBtcOracleAddress queries delegate keys by btc oracle address.
+  rpc DelegateKeysByBtcOracleAddress(QueryDelegateKeysByBtcOracleAddressRequest) returns (QueryDelegateKeysByBtcOracleAddressResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/forks/delegate_keys_by_btc_oracle_address/{btcOracleAddress}";
+  }
+
+  // DelegateKeysAll queries all delegate keys.
+  rpc DelegateKeysAll(QueryDelegateKeysAllRequest) returns (QueryDelegateKeysAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/forks/delegate_keys_all";
+  }
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+message QueryAttestationsRequest {
+  uint64 limit = 1;
+  string order_by = 2;
+  string proposal_type = 3;
+  uint64 btc_height = 4;
+}
+
+message QueryAttestationsResponse {
+  repeated Attestation attestations = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryDelegateKeysByBtcOracleAddressRequest {
+  string btcOracleAddress = 1;
+}
+
+message QueryDelegateKeysByBtcOracleAddressResponse {
+  MsgSetDelegateAddresses addresses = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryDelegateKeysAllRequest {}
+
+message QueryDelegateKeysAllResponse {
+  repeated MsgSetDelegateAddresses addresses = 1 [(gogoproto.nullable) = false];
+}

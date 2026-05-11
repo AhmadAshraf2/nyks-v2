@@ -1,0 +1,41 @@
+syntax = "proto3";
+package twilightproject.nyks.zkos;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "twilightproject/nyks/zkos/params.proto";
+import "twilightproject/nyks/zkos/tx.proto";
+
+option go_package = "twilight-project/nyks/x/zkos/types";
+
+service Query {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/zkos/params";
+  }
+  rpc TransferTx(QueryTransferTxRequest) returns (QueryTransferTxResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/zkos/transfer_tx/{txId}";
+  }
+  rpc MintOrBurnTradingBtc(QueryMintOrBurnTradingBtcRequest) returns (QueryMintOrBurnTradingBtcResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/zkos/mint_or_burn_trading_btc/{twilightAddress}";
+  }
+}
+
+message QueryParamsRequest {}
+message QueryParamsResponse {
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryTransferTxRequest {
+  string txId = 1;
+}
+message QueryTransferTxResponse {
+  MsgTransferTx TransferTx = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryMintOrBurnTradingBtcRequest {
+  string twilightAddress = 1;
+}
+message QueryMintOrBurnTradingBtcResponse {
+  repeated MsgMintBurnTradingBtc MintOrBurnTradingBtc = 1 [(gogoproto.nullable) = false];
+}

@@ -1,0 +1,10 @@
+syntax = "proto3";
+package twilightproject.nyks.zkos;
+
+option go_package = "twilight-project/nyks/x/zkos/types";
+
+message EventTransferTx {
+  string message = 1;
+  string txId = 2;
+  string zkOracleAddress = 3;
+}

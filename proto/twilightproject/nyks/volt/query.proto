@@ -1,0 +1,139 @@
+syntax = "proto3";
+package twilightproject.nyks.volt;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "twilightproject/nyks/volt/params.proto";
+import "twilightproject/nyks/volt/clearing.proto";
+import "twilightproject/nyks/volt/reserve.proto";
+import "twilightproject/nyks/volt/withdraw.proto";
+import "twilightproject/nyks/volt/tx.proto";
+
+option go_package = "twilight-project/nyks/x/volt/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/params";
+  }
+
+  rpc BtcReserve(QueryBtcReserveRequest) returns (QueryBtcReserveResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/btc_reserve";
+  }
+
+  rpc ClearingAccount(QueryClearingAccountRequest) returns (QueryClearingAccountResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/clearing_account/{twilightAddress}";
+  }
+
+  rpc ReserveClearingAccountsAll(QueryReserveClearingAccountsAllRequest) returns (QueryReserveClearingAccountsAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/reserve_clearing_accounts_all/{reserveId}";
+  }
+
+  rpc ReserveWithdrawSnapshot(QueryReserveWithdrawSnapshotRequest) returns (QueryReserveWithdrawSnapshotResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/reserve_withdraw_snapshot/{reserveId}/{roundId}";
+  }
+
+  rpc RefundTxSnapshot(QueryRefundTxSnapshotRequest) returns (QueryRefundTxSnapshotResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/refund_tx_snapshot/{reserveId}/{roundId}";
+  }
+
+  rpc BtcWithdrawRequest(QueryBtcWithdrawRequestRequest) returns (QueryBtcWithdrawRequestResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/btc_withdraw_request/{twilightAddress}";
+  }
+
+  rpc ReserveWithdrawPool(QueryReserveWithdrawPoolRequest) returns (QueryReserveWithdrawPoolResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/reserve_withdraw_pool/{reserveId}";
+  }
+
+  rpc FragmentById(QueryFragmentByIdRequest) returns (QueryFragmentByIdResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/fragment_by_id/{fragmentId}";
+  }
+
+  rpc GetAllFragments(QueryGetAllFragmentsRequest) returns (QueryGetAllFragmentsResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/get_all_fragments";
+  }
+
+  rpc SignerApplications(QuerySignerApplicationsRequest) returns (QuerySignerApplicationsResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/volt/signer_applications/{fragmentId}";
+  }
+}
+
+message QueryParamsRequest {}
+message QueryParamsResponse {
+  Params params = 1 [
+    (gogoproto.nullable) = false,
+    (amino.dont_omitempty) = true
+  ];
+}
+
+message QueryBtcReserveRequest {}
+message QueryBtcReserveResponse {
+  repeated BtcReserve BtcReserves = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryClearingAccountRequest {
+  string twilightAddress = 1;
+}
+message QueryClearingAccountResponse {
+  ClearingAccount ClearingAccount = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryReserveClearingAccountsAllRequest {
+  uint64 reserveId = 1;
+}
+message QueryReserveClearingAccountsAllResponse {
+  repeated ClearingAccount ReserveClearingAccountsAll = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryReserveWithdrawSnapshotRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QueryReserveWithdrawSnapshotResponse {
+  ReserveWithdrawSnapshot ReserveWithdrawSnapshot = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRefundTxSnapshotRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QueryRefundTxSnapshotResponse {
+  RefundTxSnapshot RefundTxSnapshot = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryBtcWithdrawRequestRequest {
+  string twilightAddress = 1;
+  uint64 reserveId = 2;
+  string btcAddress = 3;
+  uint64 withdrawAmount = 4;
+}
+message QueryBtcWithdrawRequestResponse {
+  BtcWithdrawRequestInternal BtcWithdrawRequest = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryReserveWithdrawPoolRequest {
+  uint64 reserveId = 1;
+}
+message QueryReserveWithdrawPoolResponse {
+  ReserveWithdrawPool ReserveWithdrawPool = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryFragmentByIdRequest {
+  uint64 fragmentId = 1;
+}
+message QueryFragmentByIdResponse {
+  Fragment Fragment = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetAllFragmentsRequest {}
+message QueryGetAllFragmentsResponse {
+  repeated Fragment Fragments = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySignerApplicationsRequest {
+  uint64 fragmentId = 1;
+}
+message QuerySignerApplicationsResponse {
+  repeated SignerApplicationData SignerApplications = 1 [(gogoproto.nullable) = false];
+}

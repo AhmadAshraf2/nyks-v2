@@ -1,0 +1,13 @@
+syntax = "proto3";
+package twilightproject.nyks.volt;
+
+option go_package = "twilight-project/nyks/x/volt/types";
+
+message BtcDepositAddress {
+  string btcDepositAddress = 1;
+  uint64 btcSatoshiTestAmount = 2;
+  uint64 twilightStakingAmount = 3;
+  string twilightAddress = 4;
+  bool isConfirmed = 5;
+  int64 CreationTwilightBlockHeight = 6;
+}

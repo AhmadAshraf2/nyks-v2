@@ -1,0 +1,235 @@
+syntax = "proto3";
+package twilightproject.nyks.bridge;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "twilightproject/nyks/bridge/params.proto";
+import "twilightproject/nyks/bridge/tx.proto";
+import "twilightproject/nyks/volt/deposit.proto";
+import "twilightproject/nyks/volt/withdraw.proto";
+
+option go_package = "twilight-project/nyks/x/bridge/types";
+
+service Query {
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/params";
+  }
+  rpc RegisteredBtcDepositAddresses(QueryRegisteredBtcDepositAddressesRequest) returns (QueryRegisteredBtcDepositAddressesResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/registered_btc_deposit_addresses";
+  }
+  rpc RegisteredReserveAddresses(QueryRegisteredReserveAddressesRequest) returns (QueryRegisteredReserveAddressesResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/registered_reserve_addresses";
+  }
+  rpc RegisteredBtcDepositAddress(QueryRegisteredBtcDepositAddressRequest) returns (QueryRegisteredBtcDepositAddressResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/registered_btc_deposit_address/{depositAddress}";
+  }
+  rpc RegisteredBtcDepositAddressByTwilightAddress(QueryRegisteredBtcDepositAddressByTwilightAddressRequest) returns (QueryRegisteredBtcDepositAddressByTwilightAddressResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/registered_btc_deposit_address_by_twilight_address/{twilightDepositAddress}";
+  }
+  rpc RegisteredJudges(QueryRegisteredJudgesRequest) returns (QueryRegisteredJudgesResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/registered_judges";
+  }
+  rpc RegisteredJudgeAddressByValidatorAddress(QueryRegisteredJudgeAddressByValidatorAddressRequest) returns (QueryRegisteredJudgeAddressByValidatorAddressResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/registered_judge_address_by_validator_address/{validatorAddress}";
+  }
+  rpc WithdrawBtcRequestAll(QueryWithdrawBtcRequestAllRequest) returns (QueryWithdrawBtcRequestAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/withdraw_btc_request_all";
+  }
+  rpc ProposeSweepAddress(QueryProposeSweepAddressRequest) returns (QueryProposeSweepAddressResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/propose_sweep_address/{reserveId}/{roundId}";
+  }
+  rpc ProposeSweepAddressesAll(QueryProposeSweepAddressesAllRequest) returns (QueryProposeSweepAddressesAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/propose_sweep_addresses_all/{limit}";
+  }
+  rpc UnsignedTxSweep(QueryUnsignedTxSweepRequest) returns (QueryUnsignedTxSweepResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/unsigned_tx_sweep/{reserveId}/{roundId}";
+  }
+  rpc UnsignedTxSweepAll(QueryUnsignedTxSweepAllRequest) returns (QueryUnsignedTxSweepAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/unsigned_tx_sweep_all";
+  }
+  rpc UnsignedTxRefund(QueryUnsignedTxRefundRequest) returns (QueryUnsignedTxRefundResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/unsigned_tx_refund/{reserveId}/{roundId}";
+  }
+  rpc UnsignedTxRefundAll(QueryUnsignedTxRefundAllRequest) returns (QueryUnsignedTxRefundAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/unsigned_tx_refund_all";
+  }
+  rpc SignRefund(QuerySignRefundRequest) returns (QuerySignRefundResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/sign_refund/{reserveId}/{roundId}";
+  }
+  rpc SignRefundAll(QuerySignRefundAllRequest) returns (QuerySignRefundAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/sign_refund_all";
+  }
+  rpc SignSweep(QuerySignSweepRequest) returns (QuerySignSweepResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/sign_sweep/{reserveId}/{roundId}";
+  }
+  rpc SignSweepAll(QuerySignSweepAllRequest) returns (QuerySignSweepAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/sign_sweep_all";
+  }
+  rpc BroadcastTxSweep(QueryBroadcastTxSweepRequest) returns (QueryBroadcastTxSweepResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/broadcast_tx_sweep/{reserveId}/{roundId}";
+  }
+  rpc BroadcastTxSweepAll(QueryBroadcastTxSweepAllRequest) returns (QueryBroadcastTxSweepAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/broadcast_tx_sweep_all";
+  }
+  rpc BroadcastTxRefund(QueryBroadcastTxRefundRequest) returns (QueryBroadcastTxRefundResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/broadcast_tx_refund/{reserveId}/{roundId}";
+  }
+  rpc BroadcastTxRefundAll(QueryBroadcastTxRefundAllRequest) returns (QueryBroadcastTxRefundAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/broadcast_tx_refund_all";
+  }
+  rpc ProposeRefundHashAll(QueryProposeRefundHashAllRequest) returns (QueryProposeRefundHashAllResponse) {
+    option (google.api.http).get = "/twilight-project/nyks/bridge/propose_refund_hash_all";
+  }
+}
+
+message QueryParamsRequest {}
+message QueryParamsResponse {
+  Params params = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+
+message QueryRegisteredBtcDepositAddressesRequest {}
+message QueryRegisteredBtcDepositAddressesResponse {
+  repeated volt.BtcDepositAddress addresses = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRegisteredReserveAddressesRequest {}
+message QueryRegisteredReserveAddressesResponse {
+  repeated MsgRegisterReserveAddress addresses = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRegisteredBtcDepositAddressRequest {
+  string depositAddress = 1;
+}
+message QueryRegisteredBtcDepositAddressResponse {
+  string depositAddress = 1;
+  string twilightDepositAddress = 2;
+}
+
+message QueryRegisteredBtcDepositAddressByTwilightAddressRequest {
+  string twilightDepositAddress = 1;
+}
+message QueryRegisteredBtcDepositAddressByTwilightAddressResponse {
+  string depositAddress = 1;
+  string twilightDepositAddress = 2;
+}
+
+message QueryRegisteredJudgesRequest {}
+message QueryRegisteredJudgesResponse {
+  repeated MsgBootstrapFragment Judges = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryRegisteredJudgeAddressByValidatorAddressRequest {
+  string validatorAddress = 1;
+}
+message QueryRegisteredJudgeAddressByValidatorAddressResponse {
+  string judgeAddress = 1;
+  string validatorAddress = 2;
+}
+
+message QueryWithdrawBtcRequestAllRequest {}
+message QueryWithdrawBtcRequestAllResponse {
+  repeated volt.BtcWithdrawRequestInternal withdrawRequest = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryProposeSweepAddressRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QueryProposeSweepAddressResponse {
+  MsgProposeSweepAddress proposeSweepAddressMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryProposeSweepAddressesAllRequest {
+  uint64 limit = 1;
+}
+message QueryProposeSweepAddressesAllResponse {
+  repeated MsgProposeSweepAddress proposeSweepAddressMsgs = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryUnsignedTxSweepRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QueryUnsignedTxSweepResponse {
+  MsgUnsignedTxSweep unsignedTxSweepMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryUnsignedTxSweepAllRequest {
+  uint64 limit = 1;
+}
+message QueryUnsignedTxSweepAllResponse {
+  repeated MsgUnsignedTxSweep unsignedTxSweepMsgs = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryUnsignedTxRefundRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QueryUnsignedTxRefundResponse {
+  MsgUnsignedTxRefund unsignedTxRefundMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryUnsignedTxRefundAllRequest {
+  uint64 limit = 1;
+}
+message QueryUnsignedTxRefundAllResponse {
+  repeated MsgUnsignedTxRefund unsignedTxRefundMsgs = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySignRefundRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QuerySignRefundResponse {
+  repeated MsgSignRefund signRefundMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySignRefundAllRequest {}
+message QuerySignRefundAllResponse {
+  repeated MsgSignRefund signRefundMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySignSweepRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QuerySignSweepResponse {
+  repeated MsgSignSweep signSweepMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QuerySignSweepAllRequest {}
+message QuerySignSweepAllResponse {
+  repeated MsgSignSweep signSweepMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryBroadcastTxSweepRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QueryBroadcastTxSweepResponse {
+  MsgBroadcastTxSweep broadcastSweepMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryBroadcastTxSweepAllRequest {}
+message QueryBroadcastTxSweepAllResponse {
+  repeated MsgBroadcastTxSweep BroadcastTxSweepMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryBroadcastTxRefundRequest {
+  uint64 reserveId = 1;
+  uint64 roundId = 2;
+}
+message QueryBroadcastTxRefundResponse {
+  MsgBroadcastTxRefund broadcastRefundMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryBroadcastTxRefundAllRequest {}
+message QueryBroadcastTxRefundAllResponse {
+  repeated MsgBroadcastTxRefund BroadcastTxRefundMsg = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryProposeRefundHashAllRequest {}
+message QueryProposeRefundHashAllResponse {
+  repeated MsgProposeRefundHash proposeRefundHashMsg = 1 [(gogoproto.nullable) = false];
+}

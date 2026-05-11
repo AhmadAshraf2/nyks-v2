@@ -1,0 +1,13 @@
+syntax = "proto3";
+package twilightproject.nyks.bridge;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "twilight-project/nyks/x/bridge/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "nyks/x/bridge/Params";
+  option (gogoproto.equal) = true;
+}

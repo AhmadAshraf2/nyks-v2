@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package twilightproject.nyks.forks;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "twilightproject/nyks/forks/params.proto";
+
+option go_package = "twilight-project/nyks/x/forks/types";
+
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  rpc SetDelegateAddresses(MsgSetDelegateAddresses) returns (MsgSetDelegateAddressesResponse);
+  rpc SeenBtcChainTip(MsgSeenBtcChainTip) returns (MsgSeenBtcChainTipResponse);
+}
+
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "nyks/x/forks/MsgUpdateParams";
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+message MsgUpdateParamsResponse {}
+
+message MsgSetDelegateAddresses {
+  option (cosmos.msg.v1.signer) = "validatorAddress";
+  string validatorAddress = 1;
+  string btcOracleAddress = 2;
+  string btcPublicKey = 3;
+  string zkOracleAddress = 4;
+}
+message MsgSetDelegateAddressesResponse {
+  uint64 id = 1;
+}
+
+message MsgSeenBtcChainTip {
+  option (cosmos.msg.v1.signer) = "btcOracleAddress";
+  uint64 height = 1;
+  string hash = 2;
+  string btcOracleAddress = 3;
+}
+message MsgSeenBtcChainTipResponse {}

@@ -1,0 +1,27 @@
+syntax = "proto3";
+package twilightproject.nyks.volt;
+
+option go_package = "twilight-project/nyks/x/volt/types";
+
+message EventReserveWithdrawSnapshot {
+  string message = 1;
+  uint64 reserveId = 2;
+  uint64 roundId = 3;
+}
+
+message EventRefundTxSnapshot {
+  string message = 1;
+  uint64 reserveId = 2;
+  uint64 roundId = 3;
+}
+
+message EventSignerApplication {
+  string message = 1;
+  uint64 applicationId = 2;
+}
+
+message EventAcceptSigners {
+  string message = 1;
+  uint64 fragmentId = 2;
+  string judgeAddress = 4;
+}

@@ -1,0 +1,13 @@
+syntax = "proto3";
+package nyks.nyks.v1;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "twilight-project/nyks/x/nyks/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "nyks/x/nyks/Params";
+  option (gogoproto.equal) = true;
+}

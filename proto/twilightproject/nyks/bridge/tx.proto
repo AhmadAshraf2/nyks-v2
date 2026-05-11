@@ -1,0 +1,227 @@
+syntax = "proto3";
+
+package twilightproject.nyks.bridge;
+
+import "amino/amino.proto";
+import "cosmos/msg/v1/msg.proto";
+import "cosmos_proto/cosmos.proto";
+import "gogoproto/gogo.proto";
+import "twilightproject/nyks/bridge/params.proto";
+
+option go_package = "twilight-project/nyks/x/bridge/types";
+
+service Msg {
+  option (cosmos.msg.v1.service) = true;
+
+  rpc UpdateParams(MsgUpdateParams) returns (MsgUpdateParamsResponse);
+  rpc ConfirmBtcDeposit(MsgConfirmBtcDeposit) returns (MsgConfirmBtcDepositResponse);
+  rpc RegisterBtcDepositAddress(MsgRegisterBtcDepositAddress) returns (MsgRegisterBtcDepositAddressResponse);
+  rpc RegisterReserveAddress(MsgRegisterReserveAddress) returns (MsgRegisterReserveAddressResponse);
+  rpc BootstrapFragment(MsgBootstrapFragment) returns (MsgBootstrapFragmentResponse);
+  rpc WithdrawBtcRequest(MsgWithdrawBtcRequest) returns (MsgWithdrawBtcRequestResponse);
+  rpc SweepProposal(MsgSweepProposal) returns (MsgSweepProposalResponse);
+  rpc WithdrawTxSigned(MsgWithdrawTxSigned) returns (MsgWithdrawTxSignedResponse);
+  rpc WithdrawTxFinal(MsgWithdrawTxFinal) returns (MsgWithdrawTxFinalResponse);
+  rpc SignRefund(MsgSignRefund) returns (MsgSignRefundResponse);
+  rpc BroadcastTxSweep(MsgBroadcastTxSweep) returns (MsgBroadcastTxSweepResponse);
+  rpc SignSweep(MsgSignSweep) returns (MsgSignSweepResponse);
+  rpc ProposeRefundHash(MsgProposeRefundHash) returns (MsgProposeRefundHashResponse);
+  rpc ConfirmBtcWithdraw(MsgConfirmBtcWithdraw) returns (MsgConfirmBtcWithdrawResponse);
+  rpc UnsignedTxSweep(MsgUnsignedTxSweep) returns (MsgUnsignedTxSweepResponse);
+  rpc UnsignedTxRefund(MsgUnsignedTxRefund) returns (MsgUnsignedTxRefundResponse);
+  rpc BroadcastTxRefund(MsgBroadcastTxRefund) returns (MsgBroadcastTxRefundResponse);
+  rpc ProposeSweepAddress(MsgProposeSweepAddress) returns (MsgProposeSweepAddressResponse);
+  rpc UpdateBtcDepositAddress(MsgUpdateBtcDepositAddress) returns (MsgUpdateBtcDepositAddressResponse);
+}
+
+message MsgUpdateParams {
+  option (cosmos.msg.v1.signer) = "authority";
+  option (amino.name) = "nyks/x/bridge/MsgUpdateParams";
+  string authority = 1 [(cosmos_proto.scalar) = "cosmos.AddressString"];
+  Params params = 2 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+}
+message MsgUpdateParamsResponse {}
+
+message MsgConfirmBtcDeposit {
+  option (cosmos.msg.v1.signer) = "oracleAddress";
+  string reserveAddress         = 1;
+  uint64 depositAmount          = 2;
+  uint64 height                 = 3;
+  string hash                   = 4;
+  string twilightDepositAddress = 5;
+  string oracleAddress          = 7;
+}
+message MsgConfirmBtcDepositResponse {
+  string twilightDepositAddress = 1;
+}
+
+message MsgRegisterBtcDepositAddress {
+  option (cosmos.msg.v1.signer) = "twilightAddress";
+  string btcDepositAddress     = 1;
+  uint64 btcSatoshiTestAmount  = 2;
+  uint64 twilightStakingAmount = 3;
+  string twilightAddress       = 4;
+}
+message MsgRegisterBtcDepositAddressResponse {}
+
+message MsgRegisterReserveAddress {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  uint64 fragmentId    = 1;
+  string reserveScript = 2;
+  string reserveAddress = 3;
+  string judgeAddress  = 4;
+}
+message MsgRegisterReserveAddressResponse {
+  string reserveId      = 1;
+  string reserveAddress = 2;
+}
+
+message MsgBootstrapFragment {
+  option (cosmos.msg.v1.signer) = "validatorAddress";
+  string judgeAddress         = 1;
+  uint64 numOfSigners         = 2;
+  uint64 threshold            = 3;
+  uint64 signerApplicationFee = 4;
+  uint64 fragmentFeeBips      = 5;
+  string arbitraryData        = 6;
+  string validatorAddress     = 7;
+}
+message MsgBootstrapFragmentResponse {
+  string fragmentId    = 1;
+  string reserveId     = 2;
+  string judgeAddress  = 3;
+}
+
+message MsgProposeRefundHash {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  string refundHash   = 1;
+  string judgeAddress = 2;
+}
+message MsgProposeRefundHashResponse {}
+
+message MsgWithdrawBtcRequest {
+  option (cosmos.msg.v1.signer) = "twilightAddress";
+  string withdrawAddress = 1;
+  uint64 reserveId       = 2;
+  uint64 withdrawAmount  = 3;
+  string twilightAddress = 4;
+}
+message MsgWithdrawBtcRequestResponse {
+  uint32 withdrawIdentifer = 1;
+}
+
+message MsgWithdrawTxSigned {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator          = 1;
+  string validatorAddress = 2;
+  string btcTxSigned      = 3;
+}
+message MsgWithdrawTxSignedResponse {}
+
+message MsgWithdrawTxFinal {
+  option (cosmos.msg.v1.signer) = "creator";
+  string creator      = 1;
+  string judgeAddress = 2;
+  string btcTx        = 3;
+}
+message MsgWithdrawTxFinalResponse {}
+
+message MsgConfirmBtcWithdraw {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  string txHash       = 1;
+  uint64 height       = 2;
+  string hash         = 3;
+  string judgeAddress = 4;
+}
+message MsgConfirmBtcWithdrawResponse {}
+
+message MsgProposeSweepAddress {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  string btcAddress   = 1;
+  string btcScript    = 2;
+  uint64 reserveId    = 3;
+  uint64 roundId      = 4;
+  string judgeAddress = 5;
+}
+message MsgProposeSweepAddressResponse {}
+
+message MsgUnsignedTxSweep {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  string txId               = 1;
+  string btcUnsignedSweepTx = 2;
+  uint64 reserveId          = 3;
+  uint64 roundId            = 4;
+  string judgeAddress       = 5;
+}
+message MsgUnsignedTxSweepResponse {}
+
+message MsgUnsignedTxRefund {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  uint64 reserveId           = 1;
+  uint64 roundId             = 2;
+  string btcUnsignedRefundTx = 3;
+  string judgeAddress        = 4;
+}
+message MsgUnsignedTxRefundResponse {}
+
+message MsgSignRefund {
+  option (cosmos.msg.v1.signer) = "signerAddress";
+  uint64 reserveId              = 1;
+  uint64 roundId                = 2;
+  string signerPublicKey        = 3;
+  repeated string refundSignature = 4;
+  string signerAddress          = 5;
+}
+message MsgSignRefundResponse {}
+
+message MsgSignSweep {
+  option (cosmos.msg.v1.signer) = "signerAddress";
+  uint64 reserveId              = 1;
+  uint64 roundId                = 2;
+  string signerPublicKey        = 3;
+  repeated string sweepSignature = 4;
+  string signerAddress          = 5;
+}
+message MsgSignSweepResponse {}
+
+message MsgBroadcastTxRefund {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  uint64 reserveId      = 1;
+  uint64 roundId        = 2;
+  string signedRefundTx = 3;
+  string judgeAddress   = 4;
+}
+message MsgBroadcastTxRefundResponse {}
+
+message MsgBroadcastTxSweep {
+  option (cosmos.msg.v1.signer) = "judgeAddress";
+  uint64 reserveId     = 1;
+  uint64 roundId       = 2;
+  string signedSweepTx = 3;
+  string judgeAddress  = 4;
+}
+message MsgBroadcastTxSweepResponse {}
+
+message MsgSweepProposal {
+  option (cosmos.msg.v1.signer) = "oracleAddress";
+  uint64 reserveId             = 1;
+  string newReserveAddress     = 2;
+  string judgeAddress          = 3;
+  uint64 BtcBlockNumber        = 4;
+  uint64 btcRelayCapacityValue = 5;
+  string btcTxHash             = 6;
+  uint64 UnlockHeight          = 7;
+  uint64 roundId               = 8;
+  string oracleAddress         = 9;
+}
+message MsgSweepProposalResponse {}
+
+message MsgUpdateBtcDepositAddress {
+  option (cosmos.msg.v1.signer) = "validatorAddress";
+  string btcDepositAddress     = 1;
+  uint64 btcSatoshiTestAmount  = 2;
+  uint64 twilightStakingAmount = 3;
+  string twilightAddress       = 4;
+  string validatorAddress      = 5;
+}
+message MsgUpdateBtcDepositAddressResponse {}
