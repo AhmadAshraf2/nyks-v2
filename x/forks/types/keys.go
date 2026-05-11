@@ -7,7 +7,7 @@ import (
 
 const (
 	// ModuleName defines the module name
-	ModuleName = "forks"
+	ModuleName = "nyks"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -17,7 +17,7 @@ const (
 )
 
 // ParamsKey is the prefix to retrieve all Params
-var ParamsKey = collections.NewPrefix("p_forks")
+var ParamsKey = collections.NewPrefix("p_nyks")
 
 var (
 	// KeyOrchestratorAddress indexes the validator keys for an orchestrator

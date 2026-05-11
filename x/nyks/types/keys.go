@@ -4,7 +4,7 @@ import "cosmossdk.io/collections"
 
 const (
 	// ModuleName defines the module name
-	ModuleName = "nyks"
+	ModuleName = "nyksd"
 
 	// StoreKey defines the primary module store key
 	StoreKey = ModuleName
@@ -16,4 +16,4 @@ const (
 )
 
 // ParamsKey is the prefix to retrieve all Params
-var ParamsKey = collections.NewPrefix("p_nyks")
+var ParamsKey = collections.NewPrefix("p_nyksd")
