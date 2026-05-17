@@ -11,8 +11,14 @@ import (
 func (k msgServer) UpdateBtcDepositAddress(goCtx context.Context, msg *types.MsgUpdateBtcDepositAddress) (*types.MsgUpdateBtcDepositAddressResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
+	// If validatorAddress is empty, derive it from twilightAddress (same as old chain --from behavior)
+	validatorAddress := msg.ValidatorAddress
+	if validatorAddress == "" {
+		validatorAddress = msg.TwilightAddress
+	}
+
 	// Check that the sender is a bonded validator
-	_, err := k.NyksKeeper.CheckOrchestratorValidatorInSet(ctx, msg.ValidatorAddress)
+	_, err := k.NyksKeeper.CheckOrchestratorValidatorInSet(ctx, validatorAddress)
 	if err != nil {
 		return nil, types.ErrInvalid.Wrap("caller is not a bonded validator")
 	}

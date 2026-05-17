@@ -12,14 +12,20 @@ import (
 func (k msgServer) BootstrapFragment(goCtx context.Context, msg *types.MsgBootstrapFragment) (*types.MsgBootstrapFragmentResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	valAddr, err := sdk.ValAddressFromBech32(msg.ValidatorAddress)
-	if err != nil {
-		return nil, types.ErrInvalid.Wrap("invalid validator address")
-	}
-
 	judgeAddr, e := sdk.AccAddressFromBech32(msg.JudgeAddress)
 	if e != nil {
 		return nil, types.ErrInvalid.Wrap(e.Error())
+	}
+
+	// If validatorAddress is empty, derive it from judgeAddress (same as old chain --from behavior)
+	validatorAddress := msg.ValidatorAddress
+	if validatorAddress == "" {
+		validatorAddress = sdk.ValAddress(judgeAddr).String()
+	}
+
+	valAddr, err := sdk.ValAddressFromBech32(validatorAddress)
+	if err != nil {
+		return nil, types.ErrInvalid.Wrap("invalid validator address")
 	}
 
 	_, err = k.StakingKeeper.GetValidator(ctx, valAddr)
