@@ -77,7 +77,7 @@ message MsgRegisterReserveAddressResponse {
 }
 
 message MsgBootstrapFragment {
-  option (cosmos.msg.v1.signer) = "validatorAddress";
+  option (cosmos.msg.v1.signer) = "judgeAddress";
   string judgeAddress         = 1;
   uint64 numOfSigners         = 2;
   uint64 threshold            = 3;
@@ -217,7 +217,7 @@ message MsgSweepProposal {
 message MsgSweepProposalResponse {}
 
 message MsgUpdateBtcDepositAddress {
-  option (cosmos.msg.v1.signer) = "validatorAddress";
+  option (cosmos.msg.v1.signer) = "twilightAddress";
   string btcDepositAddress     = 1;
   uint64 btcSatoshiTestAmount  = 2;
   uint64 twilightStakingAmount = 3;

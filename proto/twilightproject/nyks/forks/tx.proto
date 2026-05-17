@@ -27,7 +27,7 @@ message MsgUpdateParams {
 message MsgUpdateParamsResponse {}
 
 message MsgSetDelegateAddresses {
-  option (cosmos.msg.v1.signer) = "validatorAddress";
+  option (cosmos.msg.v1.signer) = "btcOracleAddress";
   string validatorAddress = 1;
   string btcOracleAddress = 2;
   string btcPublicKey = 3;
