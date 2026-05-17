@@ -45,10 +45,10 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod: "BootstrapFragment",
-					Use:       "bootstrap-fragment [judge-address] [num-of-signers] [threshold] [signer-application-fee] [fragment-fee-bips] [arbitrary-data]",
+					Use:       "bootstrap-fragment [judge-address] [num-of-signers] [threshold] [signer-application-fee] [fragment-fee-bips] [arbitrary-data] [validator-address]",
 					Short:     "Bootstrap a new fragment",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
-						{ProtoField: "judgeAddress"}, {ProtoField: "numOfSigners"}, {ProtoField: "threshold"}, {ProtoField: "signerApplicationFee"}, {ProtoField: "fragmentFeeBips"}, {ProtoField: "arbitraryData"},
+						{ProtoField: "judgeAddress"}, {ProtoField: "numOfSigners"}, {ProtoField: "threshold"}, {ProtoField: "signerApplicationFee"}, {ProtoField: "fragmentFeeBips"}, {ProtoField: "arbitraryData"}, {ProtoField: "validatorAddress"},
 					},
 				},
 				{
@@ -157,10 +157,10 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod: "UpdateBtcDepositAddress",
-					Use:       "update-btc-deposit-address [btc-deposit-address] [btc-satoshi-test-amount] [twilight-staking-amount] [twilight-address]",
+					Use:       "update-btc-deposit-address [btc-deposit-address] [btc-satoshi-test-amount] [twilight-staking-amount] [twilight-address] [validator-address]",
 					Short:     "Update a BTC deposit address",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
-						{ProtoField: "btcDepositAddress"}, {ProtoField: "btcSatoshiTestAmount"}, {ProtoField: "twilightStakingAmount"}, {ProtoField: "twilightAddress"},
+						{ProtoField: "btcDepositAddress"}, {ProtoField: "btcSatoshiTestAmount"}, {ProtoField: "twilightStakingAmount"}, {ProtoField: "twilightAddress"}, {ProtoField: "validatorAddress"},
 					},
 				},
 			},
