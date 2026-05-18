@@ -193,8 +193,7 @@ func New(
 
 	// Wire cross-module keeper dependencies that depinject can't handle (circular deps)
 	app.ForksKeeper.VoltKeeper = &app.VoltKeeper
-	app.ForksKeeper.AttestationHandler = forksmodulekeeper.AttestationHandler{}
-	// Note: AttestationHandler needs keeper reference - will be set when keeper is pointer-based
+	app.ForksKeeper.AttestationHandler = forksmodulekeeper.AttestationHandler{Keeper: app.ForksKeeper}
 	app.BridgeKeeper.NyksKeeper = app.ForksKeeper
 	app.BridgeKeeper.VoltKeeper = &app.VoltKeeper
 	app.ZkosKeeper.VoltKeeper = &app.VoltKeeper
