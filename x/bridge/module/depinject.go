@@ -43,7 +43,7 @@ type ModuleInputs struct {
 type ModuleOutputs struct {
 	depinject.Out
 
-	BridgeKeeper keeper.Keeper
+	BridgeKeeper *keeper.Keeper
 	Module       appmodule.AppModule
 }
 
@@ -63,7 +63,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.AccountKeeper,
 		in.BankKeeper,
 	)
-	m := NewAppModule(in.Cdc, k, in.AccountKeeper, in.BankKeeper)
+	m := NewAppModule(in.Cdc, &k, in.AccountKeeper, in.BankKeeper)
 
-	return ModuleOutputs{BridgeKeeper: k, Module: m}
+	return ModuleOutputs{BridgeKeeper: &k, Module: m}
 }

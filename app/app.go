@@ -106,10 +106,10 @@ type App struct {
 	// simulation manager
 	sm           *module.SimulationManager
 	NyksKeeper   nyksmodulekeeper.Keeper
-	ForksKeeper  forksmodulekeeper.Keeper
+	ForksKeeper  *forksmodulekeeper.Keeper
 	VoltKeeper   voltmodulekeeper.Keeper
-	BridgeKeeper bridgemodulekeeper.Keeper
-	ZkosKeeper   zkosmodulekeeper.Keeper
+	BridgeKeeper *bridgemodulekeeper.Keeper
+	ZkosKeeper   *zkosmodulekeeper.Keeper
 }
 
 func init() {
@@ -195,7 +195,7 @@ func New(
 	app.ForksKeeper.VoltKeeper = &app.VoltKeeper
 	app.ForksKeeper.AttestationHandler = forksmodulekeeper.AttestationHandler{}
 	// Note: AttestationHandler needs keeper reference - will be set when keeper is pointer-based
-	app.BridgeKeeper.NyksKeeper = &app.ForksKeeper
+	app.BridgeKeeper.NyksKeeper = app.ForksKeeper
 	app.BridgeKeeper.VoltKeeper = &app.VoltKeeper
 	app.ZkosKeeper.VoltKeeper = &app.VoltKeeper
 

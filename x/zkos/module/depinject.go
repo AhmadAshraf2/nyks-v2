@@ -38,7 +38,7 @@ type ModuleInputs struct {
 type ModuleOutputs struct {
 	depinject.Out
 
-	ZkosKeeper keeper.Keeper
+	ZkosKeeper *keeper.Keeper
 	Module     appmodule.AppModule
 }
 
@@ -55,7 +55,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		nil, // VoltKeeper - set after initialization
 		in.BankKeeper,
 	)
-	m := NewAppModule(in.Cdc, k, in.BankKeeper)
+	m := NewAppModule(in.Cdc, &k, in.BankKeeper)
 
-	return ModuleOutputs{ZkosKeeper: k, Module: m}
+	return ModuleOutputs{ZkosKeeper: &k, Module: m}
 }

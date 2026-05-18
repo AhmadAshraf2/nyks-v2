@@ -41,7 +41,7 @@ type ModuleInputs struct {
 type ModuleOutputs struct {
 	depinject.Out
 
-	ForksKeeper keeper.Keeper
+	ForksKeeper *keeper.Keeper
 	Module      appmodule.AppModule
 }
 
@@ -60,7 +60,7 @@ func ProvideModule(in ModuleInputs) ModuleOutputs {
 		in.BankKeeper,
 		nil, // VoltKeeper - set after initialization due to circular dependency
 	)
-	m := NewAppModule(in.Cdc, k, in.AuthKeeper, in.BankKeeper)
+	m := NewAppModule(in.Cdc, &k, in.AuthKeeper, in.BankKeeper)
 
-	return ModuleOutputs{ForksKeeper: k, Module: m}
+	return ModuleOutputs{ForksKeeper: &k, Module: m}
 }
