@@ -92,10 +92,10 @@ func (am AppModule) AutoCLIOptions() *autocliv1.ModuleOptions {
 				},
 				{
 					RpcMethod: "RegisterReserveAddress",
-					Use:       "register-reserve-address [fragment-id] [reserve-script] [reserve-address] [judge-address]",
+					Use:       "register-reserve-address [fragment-id] [reserve-script] [reserve-address]",
 					Short:     "Register a reserve address",
 					PositionalArgs: []*autocliv1.PositionalArgDescriptor{
-						{ProtoField: "fragmentId"}, {ProtoField: "reserveScript"}, {ProtoField: "reserveAddress"}, {ProtoField: "judgeAddress"},
+						{ProtoField: "fragmentId"}, {ProtoField: "reserveScript"}, {ProtoField: "reserveAddress"},
 					},
 				},
 				{
