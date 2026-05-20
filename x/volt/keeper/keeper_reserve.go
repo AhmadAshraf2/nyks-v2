@@ -6,6 +6,7 @@ import (
 
 	"cosmossdk.io/math"
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	bridgetypes "twilight-project/nyks/x/bridge/types"
 	forkstypes "twilight-project/nyks/x/forks/types"
 	"twilight-project/nyks/x/volt/types"
 )
@@ -89,7 +90,7 @@ func (k Keeper) UpdateBtcReserveAfterMint(ctx context.Context, mintedValue uint6
 		}
 
 		if btcDeposit.TwilightStakingAmount > 0 {
-			err = k.BankKeeper.SendCoinsFromModuleToAccount(ctx, forkstypes.ModuleName, twilightAddress, sdk.NewCoins(sdk.NewCoin("nyks", math.NewIntFromUint64(btcDeposit.TwilightStakingAmount))))
+			err = k.BankKeeper.SendCoinsFromModuleToAccount(ctx, bridgetypes.ModuleName, twilightAddress, sdk.NewCoins(sdk.NewCoin("nyks", math.NewIntFromUint64(btcDeposit.TwilightStakingAmount))))
 			if err != nil {
 				return err
 			}
